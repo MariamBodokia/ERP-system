@@ -2,6 +2,7 @@ import { ModuleLayout } from "@/components/module-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Plus, TrendingUp, TrendingDown, DollarSign } from "lucide-react"
+import { useLanguage } from "@/lib/language-context"
 
 const navItems = [
   { title: "Financial Planning", titleKa: "ფინანსური დაგეგმვა", href: "/finance" },
@@ -16,17 +17,19 @@ const budgetItems = [
 ]
 
 export default function FinancePage() {
+  const { t } = useLanguage()
+
   return (
     <ModuleLayout moduleName="Finance Management" moduleNameKa="ფინანსების მართვა" navItems={navItems}>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Financial Planning</h1>
-            <p className="text-muted-foreground">Budget planning and financial forecasting</p>
+            <h1 className="text-3xl font-bold text-foreground">{t("budgetPlanning")}</h1>
+            <p className="text-muted-foreground">{t("manageBudgets")}</p>
           </div>
           <Button className="gap-2">
             <Plus className="h-4 w-4" />
-            New Budget
+            {t("newBudget")}
           </Button>
         </div>
 
@@ -38,7 +41,7 @@ export default function FinancePage() {
                 <span className="text-sm font-medium text-success">+5%</span>
               </div>
               <div className="text-2xl font-bold text-foreground mb-1">₾ 280,000</div>
-              <div className="text-sm text-muted-foreground">Total Budget</div>
+              <div className="text-sm text-muted-foreground">{t("budgetAmount")}</div>
             </CardContent>
           </Card>
           <Card>
@@ -48,7 +51,7 @@ export default function FinancePage() {
                 <span className="text-sm font-medium text-success">-2%</span>
               </div>
               <div className="text-2xl font-bold text-foreground mb-1">₾ 275,000</div>
-              <div className="text-sm text-muted-foreground">Actual Spend</div>
+              <div className="text-sm text-muted-foreground">{t("spent")}</div>
             </CardContent>
           </Card>
           <Card>
@@ -58,15 +61,15 @@ export default function FinancePage() {
                 <span className="text-sm font-medium text-success">98%</span>
               </div>
               <div className="text-2xl font-bold text-foreground mb-1">₾ 5,000</div>
-              <div className="text-sm text-muted-foreground">Remaining</div>
+              <div className="text-sm text-muted-foreground">{t("remaining")}</div>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Budget vs Actual</CardTitle>
-            <CardDescription>Comparison by category</CardDescription>
+            <CardTitle>{t("budgetPlanning")}</CardTitle>
+            <CardDescription>{t("manageBudgets")}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -79,8 +82,8 @@ export default function FinancePage() {
                     </span>
                   </div>
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>Budgeted: ₾ {item.budgeted.toLocaleString()}</span>
-                    <span>Actual: ₾ {item.actual.toLocaleString()}</span>
+                    <span>{t("budgeted")}: ₾ {item.budgeted.toLocaleString()}</span>
+                    <span>{t("actual")}: ₾ {item.actual.toLocaleString()}</span>
                   </div>
                 </div>
               ))}

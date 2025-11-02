@@ -12,6 +12,7 @@ import type {
   Customer,
   AccountingEntry,
 } from "./db-schema"
+import { validateContract, validatePurchaseOrder, validateSalesOrder, validateInventoryItem, ValidationError } from "./validation"
 
 interface Movement {
   id: string
@@ -119,21 +120,70 @@ export const useDataStore = create<DataStore>()(
       accountingEntries: mockAccountingEntries,
 
       // Contract actions
-      addContract: (contract) => set((state) => ({ contracts: [...state.contracts, contract] })),
-      updateContract: (id, contract) =>
-        set((state) => ({
-          contracts: state.contracts.map((c) => (c.id === id ? { ...c, ...contract } : c)),
-        })),
-      deleteContract: (id) => set((state) => ({ contracts: state.contracts.filter((c) => c.id !== id) })),
+      addContract: (contract) => {
+        const errors = validateContract(contract);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        set((state) => ({ contracts: [...state.contracts, contract] }));
+      },
+      updateContract: (id, contract) => set((state) => {
+        const existingContract = state.contracts.find((c: Contract) => c.id === id);
+        if (!existingContract) {
+          throw new Error("Contract not found");
+        }
+        const mergedContract = { ...existingContract, ...contract };
+        const errors = validateContract(mergedContract);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        return {
+          contracts: state.contracts.map((c: Contract) => (c.id === id ? mergedContract : c)),
+        };
+      }),
+      deleteContract: (id) => set((state) => {
+        const existingContract = state.contracts.find((c: Contract) => c.id === id);
+        if (!existingContract) {
+          throw new Error("Contract not found");
+        }
+        return { 
+          contracts: state.contracts.filter((c: Contract) => c.id !== id) 
+        };
+      }),
 
       // Purchase Order actions
-      addPurchaseOrder: (po) => set((state) => ({ purchaseOrders: [...state.purchaseOrders, po] })),
-      updatePurchaseOrder: (id, po) =>
-        set((state) => ({
-          purchaseOrders: state.purchaseOrders.map((p) => (p.id === id ? { ...p, ...po } : p)),
-        })),
-      deletePurchaseOrder: (id) =>
-        set((state) => ({ purchaseOrders: state.purchaseOrders.filter((p) => p.id !== id) })),
+      addPurchaseOrder: (po) => {
+        const errors = validatePurchaseOrder(po);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        set((state) => ({ purchaseOrders: [...state.purchaseOrders, po] }));
+      },
+      updatePurchaseOrder: (id, po) => set((state) => {
+        const existingPO = state.purchaseOrders.find((p: PurchaseOrder) => p.id === id);
+        if (!existingPO) {
+          throw new Error("Purchase order not found");
+        }
+        const mergedPO = { ...existingPO, ...po };
+        const errors = validatePurchaseOrder(mergedPO);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        return {
+          purchaseOrders: state.purchaseOrders.map((p: PurchaseOrder) => 
+            p.id === id ? mergedPO : p
+          ),
+        };
+      }),
+      deletePurchaseOrder: (id) => set((state) => {
+        const existingPO = state.purchaseOrders.find((p: PurchaseOrder) => p.id === id);
+        if (!existingPO) {
+          throw new Error("Purchase order not found");
+        }
+        return { 
+          purchaseOrders: state.purchaseOrders.filter((p: PurchaseOrder) => p.id !== id)
+        };
+      }),
 
       // Supplier actions
       addSupplier: (supplier) => set((state) => ({ suppliers: [...state.suppliers, supplier] })),
@@ -144,12 +194,38 @@ export const useDataStore = create<DataStore>()(
       deleteSupplier: (id) => set((state) => ({ suppliers: state.suppliers.filter((s) => s.id !== id) })),
 
       // Inventory actions
-      addInventoryItem: (item) => set((state) => ({ inventory: [...state.inventory, item] })),
-      updateInventoryItem: (id, item) =>
-        set((state) => ({
-          inventory: state.inventory.map((i) => (i.id === id ? { ...i, ...item } : i)),
-        })),
-      deleteInventoryItem: (id) => set((state) => ({ inventory: state.inventory.filter((i) => i.id !== id) })),
+      addInventoryItem: (item) => {
+        const errors = validateInventoryItem(item);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        set((state) => ({ inventory: [...state.inventory, item] }));
+      },
+      updateInventoryItem: (id, item) => set((state) => {
+        const existingItem = state.inventory.find((i: InventoryItem) => i.id === id);
+        if (!existingItem) {
+          throw new Error("Inventory item not found");
+        }
+        const mergedItem = { ...existingItem, ...item };
+        const errors = validateInventoryItem(mergedItem);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        return {
+          inventory: state.inventory.map((i: InventoryItem) => 
+            i.id === id ? mergedItem : i
+          ),
+        };
+      }),
+      deleteInventoryItem: (id) => set((state) => {
+        const existingItem = state.inventory.find((i: InventoryItem) => i.id === id);
+        if (!existingItem) {
+          throw new Error("Inventory item not found");
+        }
+        return { 
+          inventory: state.inventory.filter((i: InventoryItem) => i.id !== id)
+        };
+      }),
 
       // Warehouse actions
       addWarehouse: (warehouse) => set((state) => ({ warehouses: [...state.warehouses, warehouse] })),
@@ -160,12 +236,36 @@ export const useDataStore = create<DataStore>()(
       deleteWarehouse: (id) => set((state) => ({ warehouses: state.warehouses.filter((w) => w.id !== id) })),
 
       // Sales Order actions
-      addSalesOrder: (order) => set((state) => ({ salesOrders: [...state.salesOrders, order] })),
-      updateSalesOrder: (id, order) =>
-        set((state) => ({
-          salesOrders: state.salesOrders.map((o) => (o.id === id ? { ...o, ...order } : o)),
-        })),
-      deleteSalesOrder: (id) => set((state) => ({ salesOrders: state.salesOrders.filter((o) => o.id !== id) })),
+      addSalesOrder: (order) => {
+        const errors = validateSalesOrder(order);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        set((state) => ({ salesOrders: [...state.salesOrders, order] }));
+      },
+      updateSalesOrder: (id, order) => set((state) => {
+        const existingOrder = state.salesOrders.find((o: SalesOrder) => o.id === id);
+        if (!existingOrder) {
+          throw new Error("Sales order not found");
+        }
+        const mergedOrder = { ...existingOrder, ...order };
+        const errors = validateSalesOrder(mergedOrder);
+        if (errors.length > 0) {
+          throw new ValidationError(errors);
+        }
+        return {
+          salesOrders: state.salesOrders.map((o: SalesOrder) => (o.id === id ? mergedOrder : o)),
+        };
+      }),
+      deleteSalesOrder: (id) => set((state) => {
+        const existingOrder = state.salesOrders.find((o: SalesOrder) => o.id === id);
+        if (!existingOrder) {
+          throw new Error("Sales order not found");
+        }
+        return { 
+          salesOrders: state.salesOrders.filter((o: SalesOrder) => o.id !== id) 
+        };
+      }),
 
       // Customer actions
       addCustomer: (customer) => set((state) => ({ customers: [...state.customers, customer] })),

@@ -13,8 +13,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useDataStore } from "@/lib/data-store"
 import type { Contract } from "@/lib/db-schema"
+import { useLanguage } from "@/lib/language-context"
+import ErrorBoundary from "@/components/error-boundary"
 
 export function ContractsManager() {
+  const { t } = useLanguage()
   const { contracts, addContract, updateContract, deleteContract } = useDataStore()
   const [isOpen, setIsOpen] = useState(false)
   const [editingContract, setEditingContract] = useState<Contract | null>(null)
@@ -56,7 +59,7 @@ export function ContractsManager() {
   }
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this contract?")) {
+    if (confirm(t("confirmContractDelete"))) {
       deleteContract(id)
     }
   }
@@ -65,7 +68,7 @@ export function ContractsManager() {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Contracts Management</CardTitle>
+          <CardTitle>{t("legalManagement")}</CardTitle>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button
@@ -75,17 +78,17 @@ export function ContractsManager() {
                 }}
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Add Contract
+                {t("newContract")}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>{editingContract ? "Edit Contract" : "Add New Contract"}</DialogTitle>
+                <DialogTitle>{editingContract ? t("edit") : t("newContract")}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Contract Number</Label>
+                    <Label>{t("contractNumber")}</Label>
                     <Input
                       value={formData.contract_number || ""}
                       onChange={(e) => setFormData({ ...formData, contract_number: e.target.value })}
@@ -93,7 +96,7 @@ export function ContractsManager() {
                     />
                   </div>
                   <div>
-                    <Label>Title</Label>
+                    <Label>{t("title")}</Label>
                     <Input
                       value={formData.title || ""}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -101,43 +104,43 @@ export function ContractsManager() {
                     />
                   </div>
                   <div>
-                    <Label>Type</Label>
+                    <Label>{t("type")}</Label>
                     <Select
                       value={formData.type}
                       onValueChange={(value) => setFormData({ ...formData, type: value as any })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
+                        <SelectValue placeholder={t("selectType")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="sales">Sales</SelectItem>
-                        <SelectItem value="purchase">Purchase</SelectItem>
-                        <SelectItem value="service">Service</SelectItem>
-                        <SelectItem value="lease">Lease</SelectItem>
-                        <SelectItem value="license">License</SelectItem>
-                        <SelectItem value="partnership">Partnership</SelectItem>
+                        <SelectItem value="sales">{t("sales")}</SelectItem>
+                        <SelectItem value="purchase">{t("purchase")}</SelectItem>
+                        <SelectItem value="service">{t("service")}</SelectItem>
+                        <SelectItem value="lease">{t("lease")}</SelectItem>
+                        <SelectItem value="license">{t("license")}</SelectItem>
+                        <SelectItem value="partnership">{t("partnership")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label>Status</Label>
+                    <Label>{t("status")}</Label>
                     <Select
                       value={formData.status}
                       onValueChange={(value) => setFormData({ ...formData, status: value as any })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
+                        <SelectValue placeholder={t("selectStatus")} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="draft">Draft</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="expired">Expired</SelectItem>
-                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                        <SelectItem value="draft">{t("draft")}</SelectItem>
+                        <SelectItem value="active">{t("active")}</SelectItem>
+                        <SelectItem value="expired">{t("expired")}</SelectItem>
+                        <SelectItem value="cancelled">{t("cancelled")}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label>Buyer</Label>
+                    <Label>{t("buyer")}</Label>
                     <Input
                       value={formData.party_buyer || ""}
                       onChange={(e) => setFormData({ ...formData, party_buyer: e.target.value })}
@@ -145,40 +148,43 @@ export function ContractsManager() {
                     />
                   </div>
                   <div>
-                    <Label>Seller</Label>
+                    <Label>{t("seller")}</Label>
                     <Input
                       value={formData.party_seller || ""}
                       onChange={(e) => setFormData({ ...formData, party_seller: e.target.value })}
                       required
                     />
                   </div>
-                  <div>
-                    <Label>Amount</Label>
-                    <Input
-                      type="number"
-                      value={formData.amount || ""}
-                      onChange={(e) => setFormData({ ...formData, amount: Number.parseFloat(e.target.value) })}
-                      required
-                    />
+                  <div className="grid grid-cols-2 col-span-2 gap-4">
+                    <div>
+                      <Label>{t("amount")}</Label>
+                      <Input
+                        type="number"
+                        step="0.01"
+                        value={formData.amount || ""}
+                        onChange={(e) => setFormData({ ...formData, amount: Number.parseFloat(e.target.value) })}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label>{t("currency")}</Label>
+                      <Select
+                        value={formData.currency}
+                        onValueChange={(value) => setFormData({ ...formData, currency: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("selectCurrency")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="GEL">GEL</SelectItem>
+                          <SelectItem value="USD">USD</SelectItem>
+                          <SelectItem value="EUR">EUR</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                   <div>
-                    <Label>Currency</Label>
-                    <Select
-                      value={formData.currency}
-                      onValueChange={(value) => setFormData({ ...formData, currency: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="GEL">GEL</SelectItem>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>Start Date</Label>
+                    <Label>{t("startDate")}</Label>
                     <Input
                       type="date"
                       value={formData.start_date || ""}
@@ -187,7 +193,7 @@ export function ContractsManager() {
                     />
                   </div>
                   <div>
-                    <Label>End Date</Label>
+                    <Label>{t("endDate")}</Label>
                     <Input
                       type="date"
                       value={formData.end_date || ""}
@@ -196,7 +202,7 @@ export function ContractsManager() {
                     />
                   </div>
                   <div className="col-span-2">
-                    <Label>Payment Terms</Label>
+                    <Label>{t("paymentTerms")}</Label>
                     <Input
                       value={formData.payment_terms || ""}
                       onChange={(e) => setFormData({ ...formData, payment_terms: e.target.value })}
@@ -206,9 +212,9 @@ export function ContractsManager() {
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
-                    Cancel
+                    {t("cancel")}
                   </Button>
-                  <Button type="submit">{editingContract ? "Update" : "Create"}</Button>
+                  <Button type="submit">{editingContract ? t("update") : t("create")}</Button>
                 </div>
               </form>
             </DialogContent>
@@ -219,14 +225,14 @@ export function ContractsManager() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Contract #</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Start Date</TableHead>
-              <TableHead>End Date</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>{t("contractNumber")}</TableHead>
+              <TableHead>{t("title")}</TableHead>
+              <TableHead>{t("type")}</TableHead>
+              <TableHead>{t("status")}</TableHead>
+              <TableHead>{t("amount")}</TableHead>
+              <TableHead>{t("startDate")}</TableHead>
+              <TableHead>{t("endDate")}</TableHead>
+              <TableHead>{t("actions")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -245,11 +251,11 @@ export function ContractsManager() {
                           : "bg-red-500/10 text-red-500"
                     }`}
                   >
-                    {contract.status}
+                    {t(contract.status)}
                   </span>
                 </TableCell>
                 <TableCell>
-                  {contract.amount.toLocaleString()} {contract.currency}
+                  {contract.currency} {contract.amount.toLocaleString()}
                 </TableCell>
                 <TableCell>{contract.start_date}</TableCell>
                 <TableCell>{contract.end_date}</TableCell>

@@ -14,10 +14,49 @@ export const translations = {
     managerial: "Managerial",
     bi: "Business Intelligence",
 
+    // Admin
+    adminPanel: "Admin Panel",
+    adminDescription: "Data Management & Configuration",
+    dataManagement: "Data Management",
+    dataManagementDescription: "Add, edit, or remove data from all system modules. Changes are saved automatically.",
+
     // Common
     search: "Search",
     filter: "Filter",
     export: "Export",
+    errorOccurred: "An Error Occurred",
+    tryAgain: "Try Again",
+    title: "Title",
+    validationTester: "Validation Tests",
+    runTests: "Run Tests",
+    selectWarehouse: "Select a warehouse",
+
+    // Order Status
+    newBudget: "New Budget",
+    purchased: "Purchased",
+    received: "Received",
+    paid: "Paid",
+    testSummary: "Test Summary",
+    totalTests: "Total Tests",
+    passedTests: "Passed Tests",
+    failedTests: "Failed Tests",
+    confirmContractDelete: "Are you sure you want to delete this contract?",
+    update: "Update",
+    create: "Create",
+    selectType: "Select Type",
+    selectStatus: "Select Status",
+    selectCurrency: "Select Currency",
+    purchase: "Purchase",
+    service: "Service",
+    lease: "Lease",
+    license: "License",
+    partnership: "Partnership",
+    draft: "Draft",
+    active: "Active",
+    expired: "Expired",
+    cancelled: "Cancelled",
+    buyer: "Buyer",
+    seller: "Seller",
     add: "Add",
     edit: "Edit",
     delete: "Delete",
@@ -27,6 +66,7 @@ export const translations = {
     actions: "Actions",
     date: "Date",
     amount: "Amount",
+    currency: "Currency",
     total: "Total",
     new: "New",
     view: "View",
@@ -95,7 +135,7 @@ export const translations = {
     procurementReports: "Procurement Reports",
     viewReports: "View procurement analytics and reports",
     totalSpend: "Total Spend",
-    avgOrderValue: "Avg Order Value",
+    procurementAvgOrderValue: "Avg Order Value",
     topSuppliers: "Top Suppliers",
 
     // Warehouse
@@ -180,7 +220,7 @@ export const translations = {
     salesReports: "Sales Reports",
     viewSalesReports: "View sales analytics and reports",
     totalRevenue: "Total Revenue",
-    avgOrderValue: "Avg Order Value",
+    salesAvgOrderValue: "Avg Order Value",
     topCustomers: "Top Customers",
 
     // Production
@@ -224,7 +264,7 @@ export const translations = {
     manageDebts: "Manage debts and obligations",
     creditor: "Creditor",
     debtAmount: "Debt Amount",
-    dueDate: "Due Date",
+    debtDueDate: "Due Date",
     paymentSchedule: "Payment Schedule",
 
     // HR
@@ -288,10 +328,49 @@ export const translations = {
     managerial: "მენეჯერული",
     bi: "ბიზნეს ანალიტიკა",
 
+    // Admin
+    adminPanel: "ადმინისტრირება",
+    adminDescription: "მონაცემთა მართვა და კონფიგურაცია",
+    dataManagement: "მონაცემთა მართვა",
+    dataManagementDescription: "დაამატეთ, შეცვალეთ ან წაშალეთ ყველა მოდულის მონაცემები. ცვლილებები ავტომატურად ინახება.",
+
     // Common
     search: "ძებნა",
     filter: "ფილტრი",
     export: "ექსპორტი",
+    errorOccurred: "დაფიქსირდა შეცდომა",
+    tryAgain: "სცადეთ ხელახლა",
+    selectWarehouse: "აირჩიეთ საწყობი",
+
+    // Order Status
+    newBudget: "ახალი ბიუჯეტი",
+    purchased: "შესყიდული",
+    received: "მიღებული",
+    paid: "გადახდილი",
+    title: "სათაური",
+    validationTester: "ვალიდაციის ტესტები",
+    runTests: "ტესტების გაშვება",
+    testSummary: "ტესტების შედეგები",
+    totalTests: "სულ ტესტები",
+    passedTests: "წარმატებული ტესტები",
+    failedTests: "წარუმატებელი ტესტები",
+    confirmContractDelete: "ნამდვილად გსურთ კონტრაქტის წაშლა?",
+    update: "განახლება",
+    create: "შექმნა",
+    selectType: "აირჩიეთ ტიპი",
+    selectStatus: "აირჩიეთ სტატუსი",
+    selectCurrency: "აირჩიეთ ვალუტა",
+    purchase: "შესყიდვა",
+    service: "მომსახურება",
+    lease: "იჯარა",
+    license: "ლიცენზია",
+    partnership: "პარტნიორობა",
+    draft: "პროექტი",
+    active: "აქტიური",
+    expired: "ვადაგასული",
+    cancelled: "გაუქმებული",
+    buyer: "მყიდველი",
+    seller: "გამყიდველი",
     add: "დამატება",
     edit: "რედაქტირება",
     delete: "წაშლა",
@@ -301,6 +380,7 @@ export const translations = {
     actions: "მოქმედებები",
     date: "თარიღი",
     amount: "თანხა",
+    currency: "ვალუტა",
     total: "სულ",
     new: "ახალი",
     view: "ნახვა",
@@ -369,7 +449,7 @@ export const translations = {
     procurementReports: "შესყიდვების ანგარიშები",
     viewReports: "იხილეთ შესყიდვების ანალიტიკა და ანგარიშები",
     totalSpend: "სულ ხარჯი",
-    avgOrderValue: "საშუალო შეკვეთის ღირებულება",
+    procurementAvgOrderValue: "საშუალო შეკვეთის ღირებულება",
     topSuppliers: "საუკეთესო მიმწოდებლები",
 
     // Warehouse
@@ -454,7 +534,7 @@ export const translations = {
     salesReports: "გაყიდვების ანგარიშები",
     viewSalesReports: "იხილეთ გაყიდვების ანალიტიკა და ანგარიშები",
     totalRevenue: "სულ შემოსავალი",
-    avgOrderValue: "საშუალო შეკვეთის ღირებულება",
+    salesAvgOrderValue: "საშუალო შეკვეთის ღირებულება",
     topCustomers: "საუკეთესო კლიენტები",
 
     // Production
@@ -498,7 +578,7 @@ export const translations = {
     manageDebts: "მართეთ დავალიანებები და ვალდებულებები",
     creditor: "კრედიტორი",
     debtAmount: "დავალიანების თანხა",
-    dueDate: "ვადა",
+    debtDueDate: "ვადა",
     paymentSchedule: "გადახდის გრაფიკი",
 
     // HR

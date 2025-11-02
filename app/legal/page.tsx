@@ -1,13 +1,10 @@
 "use client"
 
-"use client"
-
 import { ModuleLayout } from "@/components/module-layout"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Plus, FileText, ScrollText } from "lucide-react"
-import { format } from "date-fns"
+import { Plus, FileText } from "lucide-react"
 import { useDataStore } from "@/lib/data-store"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -78,41 +75,43 @@ export default function LegalPage() {
               <DialogHeader>
                 <DialogTitle>{t("newContract")}</DialogTitle>
               </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div>
-                  <Label htmlFor="title">{t("details")}</Label>
-                  <Input
-                    id="title"
-                    value={newContract.title || ''}
-                    onChange={(e) => setNewContract({ ...newContract, title: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="contract_number">{t("contractNumber")}</Label>
-                  <Input
-                    id="contract_number"
-                    value={newContract.contract_number || ''}
-                    onChange={(e) => setNewContract({ ...newContract, contract_number: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="type">{t("contractType")}</Label>
-                  <Select
-                    value={newContract.type}
-                    onValueChange={(value) => setNewContract({ ...newContract, type: value as Contract['type'] })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("contractType")} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="sales">{t("sales")}</SelectItem>
-                      <SelectItem value="purchase">{t("procurement")}</SelectItem>
-                      <SelectItem value="service">Service</SelectItem>
-                      <SelectItem value="lease">Lease</SelectItem>
-                      <SelectItem value="license">License</SelectItem>
-                      <SelectItem value="partnership">Partnership</SelectItem>
-                    </SelectContent>
-                  </Select>
+              <div className="space-y-6 py-4">
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <Label htmlFor="title">{t("details")}</Label>
+                    <Input
+                      id="title"
+                      value={newContract.title || ''}
+                      onChange={(e) => setNewContract({ ...newContract, title: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="contract_number">{t("contractNumber")}</Label>
+                    <Input
+                      id="contract_number"
+                      value={newContract.contract_number || ''}
+                      onChange={(e) => setNewContract({ ...newContract, contract_number: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="type">{t("contractType")}</Label>
+                    <Select
+                      value={newContract.type}
+                      onValueChange={(value) => setNewContract({ ...newContract, type: value as Contract['type'] })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("contractType")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="sales">{t("sales")}</SelectItem>
+                        <SelectItem value="purchase">{t("procurement")}</SelectItem>
+                        <SelectItem value="service">Service</SelectItem>
+                        <SelectItem value="lease">Lease</SelectItem>
+                        <SelectItem value="license">License</SelectItem>
+                        <SelectItem value="partnership">Partnership</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -120,29 +119,30 @@ export default function LegalPage() {
                     <Input
                       id="amount"
                       type="number"
+                      step="0.01"
                       value={newContract.amount || ''}
                       onChange={(e) => setNewContract({ ...newContract, amount: Number(e.target.value) })}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="currency">{t("amount")}</Label>
+                    <Label htmlFor="currency">{t("currency")}</Label>
                     <Select
                       value={newContract.currency}
                       onValueChange={(value) => setNewContract({ ...newContract, currency: value })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder={t("amount")} />
+                        <SelectValue placeholder={t("selectCurrency")} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="GEL">GEL</SelectItem>
                         <SelectItem value="USD">USD</SelectItem>
                         <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="GEL">GEL</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
+                <Button onClick={handleAddContract} className="w-full">{t("newContract")}</Button>
               </div>
-              <Button onClick={handleAddContract}>{t("newContract")}</Button>
             </DialogContent>
           </Dialog>
         </div>

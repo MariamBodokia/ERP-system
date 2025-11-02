@@ -12,6 +12,7 @@ import { CustomersManager } from "@/components/admin/customers-manager"
 import { PurchaseOrdersManager } from "@/components/admin/purchase-orders-manager"
 import { SalesOrdersManager } from "@/components/admin/sales-orders-manager"
 import { AccountingEntriesManager } from "@/components/admin/accounting-entries-manager"
+import { ValidationTester } from "@/components/admin/validation-tester"
 
 export default function AdminPage() {
   const { t } = useLanguage()
@@ -25,8 +26,8 @@ export default function AdminPage() {
             <div className="flex items-center gap-3">
               <Settings className="h-8 w-8 text-primary" />
               <div>
-                <h1 className="text-2xl font-bold text-foreground">Admin Panel</h1>
-                <p className="text-sm text-muted-foreground">Data Management & Configuration</p>
+                <h1 className="text-2xl font-bold text-foreground">{t("adminPanel")}</h1>
+                <p className="text-sm text-muted-foreground">{t("adminDescription")}</p>
               </div>
             </div>
             <Link href="/">
@@ -41,22 +42,23 @@ export default function AdminPage() {
 
       <main className="container mx-auto px-6 py-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-foreground mb-2">Data Management</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-2">{t("dataManagement")}</h2>
           <p className="text-muted-foreground">
-            Add, edit, or remove data from all system modules. Changes are saved automatically.
+            {t("dataManagementDescription")}
           </p>
         </div>
 
         <Tabs defaultValue="contracts" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 mb-8">
-            <TabsTrigger value="contracts">Contracts</TabsTrigger>
-            <TabsTrigger value="suppliers">Suppliers</TabsTrigger>
-            <TabsTrigger value="purchase-orders">Purchase Orders</TabsTrigger>
-            <TabsTrigger value="inventory">Inventory</TabsTrigger>
-            <TabsTrigger value="warehouses">Warehouses</TabsTrigger>
-            <TabsTrigger value="customers">Customers</TabsTrigger>
-            <TabsTrigger value="sales-orders">Sales Orders</TabsTrigger>
-            <TabsTrigger value="accounting">Accounting</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-9 mb-8">
+            <TabsTrigger value="contracts">{t("contracts")}</TabsTrigger>
+            <TabsTrigger value="suppliers">{t("suppliers")}</TabsTrigger>
+            <TabsTrigger value="purchase-orders">{t("purchaseOrders")}</TabsTrigger>
+            <TabsTrigger value="inventory">{t("inventory")}</TabsTrigger>
+            <TabsTrigger value="warehouses">{t("warehouses")}</TabsTrigger>
+            <TabsTrigger value="customers">{t("customers")}</TabsTrigger>
+            <TabsTrigger value="sales-orders">{t("salesOrders")}</TabsTrigger>
+            <TabsTrigger value="accounting">{t("accounting")}</TabsTrigger>
+            <TabsTrigger value="validation">{t("validationTester")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="contracts">
@@ -89,6 +91,10 @@ export default function AdminPage() {
 
           <TabsContent value="accounting">
             <AccountingEntriesManager />
+          </TabsContent>
+
+          <TabsContent value="validation">
+            <ValidationTester />
           </TabsContent>
         </Tabs>
       </main>

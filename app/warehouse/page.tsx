@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { InventoryItem, Warehouse } from "@/lib/db-schema"
+import { useLanguage } from "@/lib/language-context"
 
 const navItems = [
   { title: "Inventory", titleKa: "ინვენტარი", href: "/warehouse" },
@@ -22,6 +23,7 @@ const navItems = [
 
 export default function WarehousePage() {
   const { inventory, warehouses, addInventoryItem } = useDataStore()
+  const { t } = useLanguage()
   const [isAddingItem, setIsAddingItem] = useState(false)
   const [newItem, setNewItem] = useState<Partial<InventoryItem>>({})
 
@@ -61,28 +63,28 @@ export default function WarehousePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Items in Stock
+              {t("inventoryItems")}
             </CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{inventory.length}</div>
             <p className="text-xs text-muted-foreground">
-              Across all warehouses
+              {t("manageInventory")}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Active Warehouses
+              {t("warehouses")}
             </CardTitle>
             <Store className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{warehouses.length}</div>
             <p className="text-xs text-muted-foreground">
-              Manage your storage locations
+              {t("manageWarehouses")}
             </p>
           </CardContent>
         </Card>
@@ -92,25 +94,25 @@ export default function WarehousePage() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Recent Inventory</CardTitle>
+              <CardTitle>{t("inventory")}</CardTitle>
               <CardDescription>
-                Monitor your inventory levels and storage locations.
+                {t("manageInventory")}
               </CardDescription>
             </div>
             <Dialog open={isAddingItem} onOpenChange={setIsAddingItem}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />
-                  Add Item
+                  {t("add")}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Add New Inventory Item</DialogTitle>
+                  <DialogTitle>{t("newInventoryItem")}</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                   <div>
-                    <Label htmlFor="name">Item Name</Label>
+                    <Label htmlFor="name">{t("productName")}</Label>
                     <Input
                       id="name"
                       value={newItem.name || ''}
@@ -118,7 +120,7 @@ export default function WarehousePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="quantity">Quantity</Label>
+                    <Label htmlFor="quantity">{t("quantity")}</Label>
                     <Input
                       id="quantity"
                       type="number"
@@ -127,13 +129,13 @@ export default function WarehousePage() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="warehouse">Warehouse</Label>
+                    <Label htmlFor="warehouse">{t("warehouses")}</Label>
                     <Select
                       value={newItem.warehouse_id}
                       onValueChange={(value) => setNewItem({ ...newItem, warehouse_id: value })}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select a warehouse" />
+                        <SelectValue placeholder={t("selectWarehouse")} />
                       </SelectTrigger>
                       <SelectContent>
                         {warehouses.map((warehouse) => (
@@ -145,7 +147,7 @@ export default function WarehousePage() {
                     </Select>
                   </div>
                 </div>
-                <Button onClick={handleAddItem}>Add Item</Button>
+                <Button onClick={handleAddItem}>{t("add")}</Button>
               </DialogContent>
             </Dialog>
           </div>
