@@ -120,9 +120,11 @@ export function SuppliersManager() {
                     </Select>
                   </div>
                   <div>
-                    <Label>Email</Label>
+                    <Label>Email *</Label>
                     <Input
                       type="email"
+                      pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                      title="Please enter a valid email (example: user@domain.com)"
                       value={formData.contact_email || ""}
                       onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
                       required

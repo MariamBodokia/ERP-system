@@ -73,6 +73,7 @@ export interface InventoryItem {
   min_quantity: number
   max_quantity: number
   unit_price: number
+  status?: "in-stock" | "low-stock" | "out-of-stock" | "overstock"
   lot_number?: string
   expiry_date?: string
   created_at: string
